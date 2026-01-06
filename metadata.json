@@ -1,0 +1,5 @@
+{
+  "name": "EOS Shout-Out App",
+  "description": "A gamified, Duolingo-style peer recognition tool based on EOS Core Values. Features high-energy UI, streaks, and AI-powered feedback coaching.",
+  "requestFramePermissions": []
+}
