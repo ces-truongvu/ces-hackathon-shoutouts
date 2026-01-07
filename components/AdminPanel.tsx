@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { AppConfig, Meme, Gift, User, Shoutout } from '../types';
+import { AppConfig, Meme, Gift, User, Shoutout, AIProvider } from '../types';
 import DuoButton from './DuoButton';
 import { useTheme } from '../context/ThemeContext';
 
@@ -11,7 +11,7 @@ interface AdminPanelProps {
   onSave: (newConfig: AppConfig) => void;
 }
 
-type Tab = 'schedule' | 'budget' | 'gamification' | 'content' | 'integration';
+type Tab = 'schedule' | 'budget' | 'gamification' | 'content' | 'integration' | 'ai';
 type ContentSubTab = 'dm' | 'recap' | 'general';
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSave }) => {
@@ -93,7 +93,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
 
       {/* Tabs */}
       <div className="flex border-b-theme border-borderMain overflow-x-auto no-scrollbar bg-surface">
-        {(['schedule', 'budget', 'gamification', 'content', 'integration'] as const).map(tab => (
+        {(['schedule', 'budget', 'gamification', 'content', 'integration', 'ai'] as const).map(tab => (
             <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -104,7 +104,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         : 'border-transparent text-textMuted hover:text-textMain hover:bg-background'}
                 `}
             >
-                {tab}
+                {tab === 'ai' ? '🧠 AI & Brain' : tab}
             </button>
         ))}
       </div>
@@ -473,6 +473,80 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         Plugin ID: com.mattermost.eos-shoutout<br/>
                         Version: 1.0.0<br/>
                         DB Type: SQLite
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* AI & BRAIN */}
+        {activeTab === 'ai' && (
+            <div className="space-y-6 max-w-lg animate-pop">
+                 <div className="border-b-theme border-borderMain pb-4 mb-4">
+                    <h3 className="text-xl font-black text-textMain">AI Integration</h3>
+                    <p className="text-textMuted text-sm">Configure the "Radical Candor" coaching engine.</p>
+                 </div>
+
+                 <div className="flex items-center justify-between p-4 border-theme border-borderMain rounded-theme bg-background mb-4">
+                    <div>
+                        <div className="font-bold text-textMain">Enable AI Features</div>
+                        <div className="text-xs text-textMuted">Turn off to disable coaching</div>
+                    </div>
+                    <input 
+                        type="checkbox" 
+                        checked={localConfig.ai.enabled}
+                        onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, enabled: e.target.checked}}))}
+                        className="w-6 h-6 accent-primary"
+                    />
+                </div>
+
+                <div className={`space-y-6 transition-opacity ${!localConfig.ai.enabled ? 'opacity-50 pointer-events-none' : ''}`}>
+                    <div className="space-y-2">
+                        <label className="text-xs font-black uppercase text-textMuted">AI Provider</label>
+                        <select 
+                            value={localConfig.ai.provider}
+                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, provider: e.target.value as AIProvider}}))}
+                            className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
+                        >
+                            <option value="Gemini">Google Gemini</option>
+                            <option value="OpenAI">OpenAI (GPT)</option>
+                            <option value="Claude">Anthropic Claude</option>
+                            <option value="Groq">Groq (Llama)</option>
+                        </select>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-black uppercase text-textMuted">API Key (Token)</label>
+                        <input 
+                            type="password" 
+                            value={localConfig.ai.apiKey}
+                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, apiKey: e.target.value}}))}
+                            className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
+                            placeholder="sk-..."
+                        />
+                        <p className="text-[10px] text-textMuted">Your key is stored locally in the plugin config.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-black uppercase text-textMuted">Model ID</label>
+                        <input 
+                            type="text" 
+                            value={localConfig.ai.model}
+                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, model: e.target.value}}))}
+                            className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
+                            placeholder={localConfig.ai.provider === 'Gemini' ? 'gemini-1.5-flash' : 'gpt-4o'}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-xs font-black uppercase text-textMuted">Custom Endpoint (Optional)</label>
+                        <input 
+                            type="text" 
+                            value={localConfig.ai.endpoint || ''}
+                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, endpoint: e.target.value}}))}
+                            className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
+                            placeholder="https://api.example.com/v1"
+                        />
+                         <p className="text-[10px] text-textMuted">Leave empty for default provider endpoints.</p>
                     </div>
                 </div>
             </div>

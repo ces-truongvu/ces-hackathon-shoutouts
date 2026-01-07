@@ -39,13 +39,22 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
   const quotaRemaining = config.budget.monthlyQuota - shoutoutCount;
   const isOverQuota = quotaRemaining <= 0;
   
+  // AI Enabled Check
+  const isAIActive = config.ai.enabled && config.ai.apiKey && config.ai.apiKey.length > 0;
+
   // useEffect moved to top level
   useEffect(() => {
       if (step !== 2) return;
+      
+      if (!isAIActive) {
+          setAnalysis(prev => ({...prev, feedback: "AI Coaching is offline."}));
+          return;
+      }
+
       const timer = setTimeout(async () => {
           if (message.length > 10) {
               setIsAnalyzing(true);
-              const result = await analyzeShoutout(message);
+              const result = await analyzeShoutout(message, config.ai);
               setAnalysis(result);
               // Pre-select detected value if we don't have a selection yet
               if (result.detectedValue) {
@@ -55,7 +64,7 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
           }
       }, 1000);
       return () => clearTimeout(timer);
-  }, [message, step]);
+  }, [message, step, config.ai, isAIActive]);
 
   const toggleUserSelection = (user: User) => {
     if (selectedUsers.find(u => u.id === user.id)) {
@@ -154,21 +163,33 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
            <span className="font-bold text-textMuted uppercase tracking-widest text-xs">Step 2 of 3</span>
         </div>
 
-        <OwlMascot 
-          mood={analysis.score > 80 ? 'happy' : 'neutral'} 
-          message={analysis.feedback} 
-        />
+        {!isAIActive ? (
+            <div className="bg-textMuted/10 p-4 rounded-theme border-theme border-textMuted flex items-center gap-3">
+                <div className="text-2xl text-textMuted grayscale opacity-50">{currentTheme.icons.mascot.sad}</div>
+                <div>
+                    <div className="font-black text-textMain text-sm">AI Coach Sleeping</div>
+                    <div className="text-xs text-textMuted">Ask admin to configure API keys in settings to enable feedback.</div>
+                </div>
+            </div>
+        ) : (
+            <OwlMascot 
+            mood={analysis.score > 80 ? 'happy' : 'neutral'} 
+            message={analysis.feedback} 
+            />
+        )}
 
-        {/* Health Bar */}
-        <div className="h-4 w-full bg-borderMain rounded-full overflow-hidden border-2 border-borderMain relative">
-             <div 
-                className={`h-full transition-all duration-500 ${getHealthColor(analysis.score)}`} 
-                style={{ width: `${analysis.score}%` }}
-             />
-             <div className="absolute top-0 w-full text-center text-[10px] font-black text-black/30 mt-0">
-                 QUALITY METER
-             </div>
-        </div>
+        {/* Health Bar (Only if AI Active) */}
+        {isAIActive && (
+            <div className="h-4 w-full bg-borderMain rounded-full overflow-hidden border-2 border-borderMain relative">
+                <div 
+                    className={`h-full transition-all duration-500 ${getHealthColor(analysis.score)}`} 
+                    style={{ width: `${analysis.score}%` }}
+                />
+                <div className="absolute top-0 w-full text-center text-[10px] font-black text-black/30 mt-0">
+                    QUALITY METER
+                </div>
+            </div>
+        )}
 
         <textarea 
             className="w-full h-40 p-4 rounded-theme border-theme border-borderMain focus:border-secondary focus:border-b-[6px] outline-none resize-none text-xl text-textMain font-medium bg-background placeholder:text-textMuted/50"
@@ -177,22 +198,24 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
             onChange={(e) => setMessage(e.target.value)}
         />
 
-        {/* CORN Analysis Grid */}
-        <div className="grid grid-cols-2 gap-2 mt-2">
-            {[
-                { label: 'Context', metric: analysis.corn.context },
-                { label: 'Observation', metric: analysis.corn.observation },
-                { label: 'Result', metric: analysis.corn.result },
-                { label: 'Next Step', metric: analysis.corn.nextStep }
-            ].map((item, idx) => (
-                <div key={idx} className={`p-2 rounded-theme-sm border-theme text-xs flex items-center justify-between ${item.metric.present ? 'bg-primary/10 border-primary' : 'bg-background border-borderMain'}`}>
-                    <span className="font-bold text-textMain">{item.label}</span>
-                    <span className="">{item.metric.present ? currentTheme.icons.ui.check : '⚪'}</span>
-                </div>
-            ))}
-        </div>
+        {/* CORN Analysis Grid (Only if AI Active) */}
+        {isAIActive && (
+            <div className="grid grid-cols-2 gap-2 mt-2">
+                {[
+                    { label: 'Context', metric: analysis.corn.context },
+                    { label: 'Observation', metric: analysis.corn.observation },
+                    { label: 'Result', metric: analysis.corn.result },
+                    { label: 'Next Step', metric: analysis.corn.nextStep }
+                ].map((item, idx) => (
+                    <div key={idx} className={`p-2 rounded-theme-sm border-theme text-xs flex items-center justify-between ${item.metric.present ? 'bg-primary/10 border-primary' : 'bg-background border-borderMain'}`}>
+                        <span className="font-bold text-textMain">{item.label}</span>
+                        <span className="">{item.metric.present ? currentTheme.icons.ui.check : '⚪'}</span>
+                    </div>
+                ))}
+            </div>
+        )}
 
-        {analysis.refinedMessage && analysis.score < 90 && (
+        {isAIActive && analysis.refinedMessage && analysis.score < 90 && (
             <div className="bg-secondary/10 p-3 rounded-theme border-theme border-secondary border-dashed text-sm text-textMain">
                 <p className="font-bold mb-1 text-secondaryDark">💡 AI Suggestion:</p>
                 <p className="italic opacity-80 mb-2">"{analysis.refinedMessage}"</p>
@@ -208,7 +231,7 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
         <div className="flex-1"></div>
 
         <DuoButton 
-            disabled={analysis.score < 20 || isAnalyzing} 
+            disabled={message.length < 5 || isAnalyzing} 
             onClick={() => setStep(3)}
             fullWidth
             className="mt-2"

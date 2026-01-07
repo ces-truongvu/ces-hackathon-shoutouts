@@ -45,6 +45,18 @@ export interface AnalysisResult {
   refinedMessage: string | null;
 }
 
+// --- AI Configuration ---
+
+export type AIProvider = 'Gemini' | 'OpenAI' | 'Claude' | 'Groq';
+
+export interface AIConfig {
+  enabled: boolean;
+  provider: AIProvider;
+  apiKey: string;
+  model: string; // e.g., 'gemini-1.5-flash', 'gpt-4'
+  endpoint?: string; // Optional custom endpoint
+}
+
 // --- Rewards / Prize Draw Types ---
 
 export interface Gift {
@@ -105,4 +117,5 @@ export interface AppConfig {
   integration: {
     channelId: string;
   };
+  ai: AIConfig;
 }

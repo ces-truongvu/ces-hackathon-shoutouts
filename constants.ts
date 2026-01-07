@@ -54,6 +54,13 @@ export const DEFAULT_CONFIG: AppConfig = {
   },
   integration: {
     channelId: 'town-square'
+  },
+  ai: {
+    enabled: true,
+    provider: 'Gemini',
+    apiKey: '', // Empty by default, must be set in Admin
+    model: 'gemini-3-flash-preview',
+    endpoint: ''
   }
 };
 
