@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import DuoButton from './DuoButton';
 import { User, CoreValue, AnalysisResult, AppConfig } from '../types';
@@ -145,7 +144,8 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
         )}
 
         {/* Scrollable List Area - Ultra Dense 5 Column Grid with Large Avatars */}
-        <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar min-h-0">
+        {/* Height is constrained to roughly 5 rows (~500px) to trigger scroll after 25 people */}
+        <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar min-h-0 max-h-[500px] border-b border-borderMain/10">
             {filteredUsers.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 opacity-40">
                     <div className="text-4xl mb-2">{currentTheme.icons.mascot.sad}</div>
