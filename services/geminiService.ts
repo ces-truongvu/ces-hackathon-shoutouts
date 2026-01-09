@@ -22,7 +22,7 @@ Analyze the provided recognition message.
 
 Tasks:
 1. Score quality (0-100) based on specificity and impact.
-2. Identify the best matching Core Value from: 'Bravely Speak & Humbly Listen', 'We Before Me', 'Hungry to Learn', 'Pursuit of Excellence'.
+2. Identify the best matching Core Value from: 'Humbly Listen & Bravely Speak', 'We Before Me', 'Hungry to Learn', 'Pursuit of Excellence'.
 3. Analyze for the CORN framework (Context, Observation, Result, Next Step).
 4. Provide a refined version of the message that improves on missing CORN elements.`;
 

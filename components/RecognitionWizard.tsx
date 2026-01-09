@@ -294,7 +294,7 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
             fullWidth
             className="mt-2"
         >
-            CHECK VALUES
+            NEXT
         </DuoButton>
       </div>
     );

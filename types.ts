@@ -1,6 +1,6 @@
 
 export enum CoreValue {
-  BRAVELY_SPEAK = "Bravely Speak & Humbly Listen",
+  BRAVELY_SPEAK = "Humbly Listen & Bravely Speak",
   WE_BEFORE_ME = "We Before Me",
   HUNGRY_TO_LEARN = "Hungry to Learn",
   PURSUIT_OF_EXCELLENCE = "Pursuit of Excellence"

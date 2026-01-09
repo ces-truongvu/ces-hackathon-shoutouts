@@ -494,7 +494,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                     <input 
                         type="checkbox" 
                         checked={localConfig.ai.enabled}
-                        onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, enabled: e.target.checked}}))}
+                        onChange={(e) => updateConfig('ai', { enabled: e.target.checked })}
                         className="w-6 h-6 accent-primary"
                     />
                 </div>
@@ -504,7 +504,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         <label className="text-xs font-black uppercase text-textMuted">AI Provider</label>
                         <select 
                             value={localConfig.ai.provider}
-                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, provider: e.target.value as AIProvider}}))}
+                            onChange={(e) => updateConfig('ai', { provider: e.target.value as AIProvider })}
                             className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
                         >
                             <option value="Gemini">Google Gemini</option>
@@ -519,7 +519,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         <input 
                             type="password" 
                             value={localConfig.ai.apiKey}
-                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, apiKey: e.target.value}}))}
+                            onChange={(e) => updateConfig('ai', { apiKey: e.target.value })}
                             className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
                             placeholder="sk-..."
                         />
@@ -531,7 +531,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         <input 
                             type="text" 
                             value={localConfig.ai.model}
-                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, model: e.target.value}}))}
+                            onChange={(e) => updateConfig('ai', { model: e.target.value })}
                             className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
                             placeholder={localConfig.ai.provider === 'Gemini' ? 'gemini-1.5-flash' : 'gpt-4o'}
                         />
@@ -542,7 +542,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ config, users, shoutouts, onSav
                         <input 
                             type="text" 
                             value={localConfig.ai.endpoint || ''}
-                            onChange={(e) => setLocalConfig(prev => ({...prev, ai: {...prev.ai, endpoint: e.target.value}}))}
+                            onChange={(e) => updateConfig('ai', { endpoint: e.target.value })}
                             className="w-full p-3 rounded-theme border-theme border-borderMain font-bold text-textMain bg-background focus:border-secondary outline-none"
                             placeholder="https://api.example.com/v1"
                         />
