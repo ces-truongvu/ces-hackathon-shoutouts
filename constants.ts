@@ -1,4 +1,3 @@
-
 import { CoreValue, AppConfig } from "./types";
 
 export const MOCK_USERS = [
@@ -27,31 +26,6 @@ export const MOCK_USERS = [
   { id: 'u23', name: 'Wanda Maximoff', avatar: 'https://i.pravatar.cc/150?u=u23', xp: 1420, league: 'Gold', streakDays: 18, role: 'Staff' },
   { id: 'u24', name: 'Xavier Woods', avatar: 'https://i.pravatar.cc/150?u=u24', xp: 810, league: 'Silver', streakDays: 4, role: 'Staff' },
   { id: 'u25', name: 'Yara Shahidi', avatar: 'https://i.pravatar.cc/150?u=u25', xp: 690, league: 'Silver', streakDays: 3, role: 'Staff' },
-  { id: 'u26', name: 'Zack Morris', avatar: 'https://i.pravatar.cc/150?u=u26', xp: 1280, league: 'Gold', streakDays: 11, role: 'Staff' },
-  { id: 'u27', name: 'Arya Stark', avatar: 'https://i.pravatar.cc/150?u=u27', xp: 500, league: 'Bronze', streakDays: 2, role: 'Staff' },
-  { id: 'u28', name: 'Bruce Wayne', avatar: 'https://i.pravatar.cc/150?u=u28', xp: 1750, league: 'Gold', streakDays: 30, role: 'Admin' },
-  { id: 'u29', name: 'Clark Kent', avatar: 'https://i.pravatar.cc/150?u=u29', xp: 1120, league: 'Gold', streakDays: 8, role: 'Staff' },
-  { id: 'u30', name: 'David Bowie', avatar: 'https://i.pravatar.cc/150?u=u30', xp: 880, league: 'Silver', streakDays: 5, role: 'Staff' },
-  { id: 'u31', name: 'Ellen Ripley', avatar: 'https://i.pravatar.cc/150?u=u31', xp: 1380, league: 'Gold', streakDays: 14, role: 'Staff' },
-  { id: 'u32', name: 'Frodo Baggins', avatar: 'https://i.pravatar.cc/150?u=u32', xp: 420, league: 'Bronze', streakDays: 1, role: 'Staff' },
-  { id: 'u33', name: 'Geralt Rivia', avatar: 'https://i.pravatar.cc/150?u=u33', xp: 1540, league: 'Gold', streakDays: 22, role: 'Staff' },
-  { id: 'u34', name: 'Hermione Granger', avatar: 'https://i.pravatar.cc/150?u=u34', xp: 1470, league: 'Gold', streakDays: 19, role: 'Staff' },
-  { id: 'u35', name: 'Iron Man', avatar: 'https://i.pravatar.cc/150?u=u35', xp: 1680, league: 'Gold', streakDays: 28, role: 'Admin' },
-  { id: 'u36', name: 'Jane Doe', avatar: 'https://i.pravatar.cc/150?u=u36', xp: 620, league: 'Silver', streakDays: 3, role: 'Staff' },
-  { id: 'u37', name: 'Katniss Everdeen', avatar: 'https://i.pravatar.cc/150?u=u37', xp: 1210, league: 'Gold', streakDays: 10, role: 'Staff' },
-  { id: 'u38', name: 'Luke Skywalker', avatar: 'https://i.pravatar.cc/150?u=u38', xp: 1330, league: 'Gold', streakDays: 16, role: 'Staff' },
-  { id: 'u39', name: 'Marty McFly', avatar: 'https://i.pravatar.cc/150?u=u39', xp: 750, league: 'Silver', streakDays: 4, role: 'Staff' },
-  { id: 'u40', name: 'Neo Matrix', avatar: 'https://i.pravatar.cc/150?u=u40', xp: 1590, league: 'Gold', streakDays: 24, role: 'Staff' },
-  { id: 'u41', name: 'Optimus Prime', avatar: 'https://i.pravatar.cc/150?u=u41', xp: 1800, league: 'Gold', streakDays: 35, role: 'Admin' },
-  { id: 'u42', name: 'Peter Parker', avatar: 'https://i.pravatar.cc/150?u=u42', xp: 940, league: 'Silver', streakDays: 6, role: 'Staff' },
-  { id: 'u43', name: 'Quinn Harley', avatar: 'https://i.pravatar.cc/150?u=u43', xp: 1150, league: 'Gold', streakDays: 9, role: 'Staff' },
-  { id: 'u44', name: 'Rose Tyler', avatar: 'https://i.pravatar.cc/150?u=u44', xp: 820, league: 'Silver', streakDays: 4, role: 'Staff' },
-  { id: 'u45', name: 'Sarah Connor', avatar: 'https://i.pravatar.cc/150?u=u45', xp: 1450, league: 'Gold', streakDays: 21, role: 'Staff' },
-  { id: 'u46', name: 'Thomas Anderson', avatar: 'https://i.pravatar.cc/150?u=u46', xp: 670, league: 'Silver', streakDays: 3, role: 'Staff' },
-  { id: 'u47', name: 'Ursula K', avatar: 'https://i.pravatar.cc/150?u=u47', xp: 530, league: 'Bronze', streakDays: 1, role: 'Staff' },
-  { id: 'u48', name: 'Victor Von', avatar: 'https://i.pravatar.cc/150?u=u48', xp: 1290, league: 'Gold', streakDays: 13, role: 'Staff' },
-  { id: 'u49', name: 'Winston Smith', avatar: 'https://i.pravatar.cc/150?u=u49', xp: 390, league: 'Bronze', streakDays: 0, role: 'Staff' },
-  { id: 'u50', name: 'Zoe Saldana', avatar: 'https://i.pravatar.cc/150?u=u50', xp: 1010, league: 'Gold', streakDays: 7, role: 'Staff' },
 ] as const;
 
 export const CORE_VALUE_COLORS = {

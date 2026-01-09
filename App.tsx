@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DuoButton from './components/DuoButton';
 import StreakFire from './components/StreakFire';
@@ -40,8 +39,8 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   { 
     id: 's_bw1', 
     fromUserId: 'u7', 
-    recipientIds: ['u28'], 
-    message: "Bruce handled the client crisis with absolute grace. He stayed calm, identified the root cause, and saved the contract.", 
+    recipientIds: ['u25'], 
+    message: "Yara handled the client crisis with absolute grace. She stayed calm, identified the root cause, and saved the contract.", 
     coreValues: [CoreValue.PURSUIT_OF_EXCELLENCE], 
     timestamp: Date.now() - 43200000,
     reactions: 15,
@@ -49,9 +48,9 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   },
   { 
     id: 's_op1', 
-    fromUserId: 'u35', 
-    recipientIds: ['u41'], 
-    message: "Optimus led the warehouse reorganization project perfectly. We finished 2 days early!", 
+    fromUserId: 'u24', 
+    recipientIds: ['u23'], 
+    message: "Wanda led the warehouse reorganization project perfectly. We finished 2 days early!", 
     coreValues: [CoreValue.WE_BEFORE_ME, CoreValue.PURSUIT_OF_EXCELLENCE], 
     timestamp: Date.now() - 129600000,
     reactions: 10,
@@ -59,9 +58,9 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   },
   { 
     id: 's_im1', 
-    fromUserId: 'u28', 
-    recipientIds: ['u35'], 
-    message: "Tony spent his weekend refactoring the legacy API. The latency dropped by 40%!", 
+    fromUserId: 'u25', 
+    recipientIds: ['u22'], 
+    message: "Vince spent his weekend refactoring the legacy API. The latency dropped by 40%!", 
     coreValues: [CoreValue.HUNGRY_TO_LEARN], 
     timestamp: Date.now() - 216000000,
     reactions: 20,
@@ -80,8 +79,8 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   { 
     id: 's_gr1', 
     fromUserId: 'u2', 
-    recipientIds: ['u33'], 
-    message: "Geralt took on the extra tickets while the rest of the team was in training. Huge help!", 
+    recipientIds: ['u21'], 
+    message: "Uma took on the extra tickets while the rest of the team was in training. Huge help!", 
     coreValues: [CoreValue.WE_BEFORE_ME], 
     timestamp: Date.now() - 388800000,
     reactions: 4,
@@ -100,8 +99,8 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   { 
     id: 's_er1', 
     fromUserId: 'u4', 
-    recipientIds: ['u31'], 
-    message: "Ellen didn't hesitate to point out the safety risks in the new lab protocol. Safety first!", 
+    recipientIds: ['u18'], 
+    message: "Riley didn't hesitate to point out the safety risks in the new lab protocol. Safety first!", 
     coreValues: [CoreValue.BRAVELY_SPEAK], 
     timestamp: Date.now() - 561600000,
     reactions: 12,
@@ -110,8 +109,8 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   { 
     id: 's_hg1', 
     fromUserId: 'u1', 
-    recipientIds: ['u34'], 
-    message: "Hermione's documentation for the new onboarding flow is a masterpiece of clarity.", 
+    recipientIds: ['u17'], 
+    message: "Quentin's documentation for the new onboarding flow is a masterpiece of clarity.", 
     coreValues: [CoreValue.PURSUIT_OF_EXCELLENCE], 
     timestamp: Date.now() - 648000000,
     reactions: 18,
@@ -119,7 +118,7 @@ const INITIAL_SHOUTOUTS: Shoutout[] = [
   },
   { 
     id: 's_wm1', 
-    fromUserId: 'u28', 
+    fromUserId: 'u25', 
     recipientIds: ['u23'], 
     message: "Wanda solved the weird intermittent bug in the CSS that had been bugging us for weeks!", 
     coreValues: [CoreValue.HUNGRY_TO_LEARN, CoreValue.PURSUIT_OF_EXCELLENCE], 
