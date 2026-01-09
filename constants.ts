@@ -2,13 +2,58 @@
 import { CoreValue, AppConfig } from "./types";
 
 export const MOCK_USERS = [
-  { id: 'u1', name: 'Alice Chen', avatar: 'https://picsum.photos/100/100?random=1', xp: 1200, league: 'Gold', streakDays: 12, role: 'Admin' },
-  { id: 'u2', name: 'Bob Smith', avatar: 'https://picsum.photos/100/100?random=2', xp: 850, league: 'Silver', streakDays: 3, role: 'Staff' },
-  { id: 'u3', name: 'Charlie Kim', avatar: 'https://picsum.photos/100/100?random=3', xp: 400, league: 'Bronze', streakDays: 0, role: 'Staff' },
-  { id: 'u4', name: 'Diana Prince', avatar: 'https://picsum.photos/100/100?random=4', xp: 920, league: 'Silver', streakDays: 5, role: 'Staff' },
+  { id: 'u1', name: 'Alice Chen', avatar: 'https://i.pravatar.cc/150?u=u1', xp: 1200, league: 'Gold', streakDays: 12, role: 'Admin' },
+  { id: 'u2', name: 'Bob Smith', avatar: 'https://i.pravatar.cc/150?u=u2', xp: 850, league: 'Silver', streakDays: 3, role: 'Staff' },
+  { id: 'u3', name: 'Charlie Kim', avatar: 'https://i.pravatar.cc/150?u=u3', xp: 400, league: 'Bronze', streakDays: 0, role: 'Staff' },
+  { id: 'u4', name: 'Diana Prince', avatar: 'https://i.pravatar.cc/150?u=u4', xp: 920, league: 'Silver', streakDays: 5, role: 'Staff' },
+  { id: 'u5', name: 'Ethan Hunt', avatar: 'https://i.pravatar.cc/150?u=u5', xp: 1100, league: 'Gold', streakDays: 8, role: 'Staff' },
+  { id: 'u6', name: 'Fiona Gallagher', avatar: 'https://i.pravatar.cc/150?u=u6', xp: 300, league: 'Bronze', streakDays: 2, role: 'Staff' },
+  { id: 'u7', name: 'George Bluth', avatar: 'https://i.pravatar.cc/150?u=u7', xp: 1500, league: 'Gold', streakDays: 20, role: 'Admin' },
+  { id: 'u8', name: 'Hannah Abbott', avatar: 'https://i.pravatar.cc/150?u=u8', xp: 720, league: 'Silver', streakDays: 4, role: 'Staff' },
+  { id: 'u9', name: 'Ian Wright', avatar: 'https://i.pravatar.cc/150?u=u9', xp: 980, league: 'Silver', streakDays: 6, role: 'Staff' },
+  { id: 'u10', name: 'Julia Roberts', avatar: 'https://i.pravatar.cc/150?u=u10', xp: 550, league: 'Bronze', streakDays: 1, role: 'Staff' },
+  { id: 'u11', name: 'Kevin Hart', avatar: 'https://i.pravatar.cc/150?u=u11', xp: 1350, league: 'Gold', streakDays: 15, role: 'Staff' },
+  { id: 'u12', name: 'Laura Palmer', avatar: 'https://i.pravatar.cc/150?u=u12', xp: 640, league: 'Silver', streakDays: 3, role: 'Staff' },
+  { id: 'u13', name: 'Mike Ross', avatar: 'https://i.pravatar.cc/150?u=u13', xp: 890, league: 'Silver', streakDays: 5, role: 'Staff' },
+  { id: 'u14', name: 'Nina Simone', avatar: 'https://i.pravatar.cc/150?u=u14', xp: 1250, league: 'Gold', streakDays: 10, role: 'Staff' },
+  { id: 'u15', name: 'Oscar Wilde', avatar: 'https://i.pravatar.cc/150?u=u15', xp: 210, league: 'Bronze', streakDays: 0, role: 'Staff' },
+  { id: 'u16', name: 'Pam Beesly', avatar: 'https://i.pravatar.cc/150?u=u16', xp: 1050, league: 'Gold', streakDays: 7, role: 'Staff' },
+  { id: 'u17', name: 'Quentin Blake', avatar: 'https://i.pravatar.cc/150?u=u17', xp: 480, league: 'Bronze', streakDays: 2, role: 'Staff' },
+  { id: 'u18', name: 'Riley Reid', avatar: 'https://i.pravatar.cc/150?u=u18', xp: 770, league: 'Silver', streakDays: 4, role: 'Staff' },
+  { id: 'u19', name: 'Steve Jobs', avatar: 'https://i.pravatar.cc/150?u=u19', xp: 1600, league: 'Gold', streakDays: 25, role: 'Admin' },
+  { id: 'u20', name: 'Tina Fey', avatar: 'https://i.pravatar.cc/150?u=u20', xp: 930, league: 'Silver', streakDays: 6, role: 'Staff' },
+  { id: 'u21', name: 'Uma Thurman', avatar: 'https://i.pravatar.cc/150?u=u21', xp: 1180, league: 'Gold', streakDays: 9, role: 'Staff' },
+  { id: 'u22', name: 'Vince Vaughn', avatar: 'https://i.pravatar.cc/150?u=u22', xp: 350, league: 'Bronze', streakDays: 1, role: 'Staff' },
+  { id: 'u23', name: 'Wanda Maximoff', avatar: 'https://i.pravatar.cc/150?u=u23', xp: 1420, league: 'Gold', streakDays: 18, role: 'Staff' },
+  { id: 'u24', name: 'Xavier Woods', avatar: 'https://i.pravatar.cc/150?u=u24', xp: 810, league: 'Silver', streakDays: 4, role: 'Staff' },
+  { id: 'u25', name: 'Yara Shahidi', avatar: 'https://i.pravatar.cc/150?u=u25', xp: 690, league: 'Silver', streakDays: 3, role: 'Staff' },
+  { id: 'u26', name: 'Zack Morris', avatar: 'https://i.pravatar.cc/150?u=u26', xp: 1280, league: 'Gold', streakDays: 11, role: 'Staff' },
+  { id: 'u27', name: 'Arya Stark', avatar: 'https://i.pravatar.cc/150?u=u27', xp: 500, league: 'Bronze', streakDays: 2, role: 'Staff' },
+  { id: 'u28', name: 'Bruce Wayne', avatar: 'https://i.pravatar.cc/150?u=u28', xp: 1750, league: 'Gold', streakDays: 30, role: 'Admin' },
+  { id: 'u29', name: 'Clark Kent', avatar: 'https://i.pravatar.cc/150?u=u29', xp: 1120, league: 'Gold', streakDays: 8, role: 'Staff' },
+  { id: 'u30', name: 'David Bowie', avatar: 'https://i.pravatar.cc/150?u=u30', xp: 880, league: 'Silver', streakDays: 5, role: 'Staff' },
+  { id: 'u31', name: 'Ellen Ripley', avatar: 'https://i.pravatar.cc/150?u=u31', xp: 1380, league: 'Gold', streakDays: 14, role: 'Staff' },
+  { id: 'u32', name: 'Frodo Baggins', avatar: 'https://i.pravatar.cc/150?u=u32', xp: 420, league: 'Bronze', streakDays: 1, role: 'Staff' },
+  { id: 'u33', name: 'Geralt Rivia', avatar: 'https://i.pravatar.cc/150?u=u33', xp: 1540, league: 'Gold', streakDays: 22, role: 'Staff' },
+  { id: 'u34', name: 'Hermione Granger', avatar: 'https://i.pravatar.cc/150?u=u34', xp: 1470, league: 'Gold', streakDays: 19, role: 'Staff' },
+  { id: 'u35', name: 'Iron Man', avatar: 'https://i.pravatar.cc/150?u=u35', xp: 1680, league: 'Gold', streakDays: 28, role: 'Admin' },
+  { id: 'u36', name: 'Jane Doe', avatar: 'https://i.pravatar.cc/150?u=u36', xp: 620, league: 'Silver', streakDays: 3, role: 'Staff' },
+  { id: 'u37', name: 'Katniss Everdeen', avatar: 'https://i.pravatar.cc/150?u=u37', xp: 1210, league: 'Gold', streakDays: 10, role: 'Staff' },
+  { id: 'u38', name: 'Luke Skywalker', avatar: 'https://i.pravatar.cc/150?u=u38', xp: 1330, league: 'Gold', streakDays: 16, role: 'Staff' },
+  { id: 'u39', name: 'Marty McFly', avatar: 'https://i.pravatar.cc/150?u=u39', xp: 750, league: 'Silver', streakDays: 4, role: 'Staff' },
+  { id: 'u40', name: 'Neo Matrix', avatar: 'https://i.pravatar.cc/150?u=u40', xp: 1590, league: 'Gold', streakDays: 24, role: 'Staff' },
+  { id: 'u41', name: 'Optimus Prime', avatar: 'https://i.pravatar.cc/150?u=u41', xp: 1800, league: 'Gold', streakDays: 35, role: 'Admin' },
+  { id: 'u42', name: 'Peter Parker', avatar: 'https://i.pravatar.cc/150?u=u42', xp: 940, league: 'Silver', streakDays: 6, role: 'Staff' },
+  { id: 'u43', name: 'Quinn Harley', avatar: 'https://i.pravatar.cc/150?u=u43', xp: 1150, league: 'Gold', streakDays: 9, role: 'Staff' },
+  { id: 'u44', name: 'Rose Tyler', avatar: 'https://i.pravatar.cc/150?u=u44', xp: 820, league: 'Silver', streakDays: 4, role: 'Staff' },
+  { id: 'u45', name: 'Sarah Connor', avatar: 'https://i.pravatar.cc/150?u=u45', xp: 1450, league: 'Gold', streakDays: 21, role: 'Staff' },
+  { id: 'u46', name: 'Thomas Anderson', avatar: 'https://i.pravatar.cc/150?u=u46', xp: 670, league: 'Silver', streakDays: 3, role: 'Staff' },
+  { id: 'u47', name: 'Ursula K', avatar: 'https://i.pravatar.cc/150?u=u47', xp: 530, league: 'Bronze', streakDays: 1, role: 'Staff' },
+  { id: 'u48', name: 'Victor Von', avatar: 'https://i.pravatar.cc/150?u=u48', xp: 1290, league: 'Gold', streakDays: 13, role: 'Staff' },
+  { id: 'u49', name: 'Winston Smith', avatar: 'https://i.pravatar.cc/150?u=u49', xp: 390, league: 'Bronze', streakDays: 0, role: 'Staff' },
+  { id: 'u50', name: 'Zoe Saldana', avatar: 'https://i.pravatar.cc/150?u=u50', xp: 1010, league: 'Gold', streakDays: 7, role: 'Staff' },
 ] as const;
 
-// Updated to use semantic theme variables
 export const CORE_VALUE_COLORS = {
   [CoreValue.BRAVELY_SPEAK]: 'bg-val1 border-val1',
   [CoreValue.WE_BEFORE_ME]: 'bg-val2 border-val2',
@@ -23,7 +68,7 @@ export const DEFAULT_CONFIG: AppConfig = {
     reminderTime: '08:00'
   },
   budget: {
-    monthlyQuota: 4,
+    monthlyQuota: 10,
     enforcementMode: 'warning',
     resetDay: 1
   },
@@ -58,13 +103,12 @@ export const DEFAULT_CONFIG: AppConfig = {
   ai: {
     enabled: true,
     provider: 'Gemini',
-    apiKey: '', // Empty by default, must be set in Admin
+    apiKey: '', 
     model: 'gemini-3-flash-preview',
     endpoint: ''
   }
 };
 
-// SQL Schema for the User's reference (mimicked by localStorage in this frontend demo)
 export const SQL_SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
@@ -82,7 +126,7 @@ CREATE TABLE IF NOT EXISTS shoutouts (
     from_user_id TEXT NOT NULL,
     to_user_id TEXT NOT NULL,
     message TEXT NOT NULL,
-    core_values TEXT NOT NULL, -- Stored as comma-separated values or JSON array
+    core_values TEXT NOT NULL, 
     timestamp INTEGER NOT NULL,
     reactions INTEGER DEFAULT 0,
     FOREIGN KEY(from_user_id) REFERENCES users(id),
@@ -99,13 +143,11 @@ CREATE TABLE IF NOT EXISTS leaderboard (
 CREATE TABLE IF NOT EXISTS monthly_quota_tracking (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     staff_id TEXT NOT NULL,
-    month_year TEXT NOT NULL, -- Format: YYYY-MM
+    month_year TEXT NOT NULL, 
     shoutouts_given INTEGER DEFAULT 0,
     quota_limit INTEGER,
     last_reset DATE
 );
-
--- PRIZE DRAW & GIFT MANAGEMENT --
 
 CREATE TABLE IF NOT EXISTS gift_config (
   id INTEGER PRIMARY KEY,
@@ -121,7 +163,7 @@ CREATE TABLE IF NOT EXISTS gift_config (
 CREATE TABLE IF NOT EXISTS draw_entries (
   id INTEGER PRIMARY KEY,
   staff_id VARCHAR(26),
-  entry_count INT,  -- Number of entries this staff has
+  entry_count INT, 
   week_ending DATE,
   created_at TIMESTAMP
 );

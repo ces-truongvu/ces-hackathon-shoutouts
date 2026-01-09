@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import DuoButton from './DuoButton';
 import { User, CoreValue, AnalysisResult, AppConfig } from '../types';
 import { analyzeShoutout } from '../services/geminiService';
@@ -11,13 +11,14 @@ interface RecognitionWizardProps {
   users: readonly User[];
   currentUser: User;
   config: AppConfig;
-  shoutoutCount: number; // Current month's count
+  shoutoutCount: number; 
   onComplete: (xp: number, recipientIds: string[], message: string, coreValues: CoreValue[]) => void;
   onCancel: () => void;
 }
 
 const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUser, config, shoutoutCount, onComplete, onCancel }) => {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const [message, setMessage] = useState('');
   const [selectedValues, setSelectedValues] = useState<CoreValue[]>([]);
@@ -36,13 +37,8 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const { currentTheme } = useTheme();
 
-  const quotaRemaining = config.budget.monthlyQuota - shoutoutCount;
-  const isOverQuota = quotaRemaining <= 0;
-  
-  // AI Enabled Check
   const isAIActive = config.ai.enabled && config.ai.apiKey && config.ai.apiKey.length > 0;
 
-  // useEffect moved to top level
   useEffect(() => {
       if (step !== 2) return;
       
@@ -56,7 +52,6 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
               setIsAnalyzing(true);
               const result = await analyzeShoutout(message, config.ai);
               setAnalysis(result);
-              // Pre-select detected value if we don't have a selection yet
               if (result.detectedValue) {
                 setSelectedValues(prev => prev.length === 0 ? [result.detectedValue!] : prev);
               }
@@ -82,6 +77,12 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
     }
   };
 
+  const filteredUsers = useMemo(() => {
+    return users
+      .filter(u => u.id !== currentUser.id)
+      .filter(u => u.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [users, currentUser.id, searchTerm]);
+
   const getHealthColor = (score: number) => {
       if (score < 40) return 'bg-danger';
       if (score < 80) return 'bg-accent';
@@ -93,82 +94,143 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
         setMessage(analysis.refinedMessage);
     }
   };
+
+  const getLeagueColor = (league: string) => {
+    switch(league) {
+        case 'Gold': return 'text-accent';
+        case 'Silver': return 'text-textMuted';
+        case 'Bronze': return 'text-orange-700';
+        default: return 'text-textMuted';
+    }
+  };
   
-  // Step 1: Select Colleagues (Multi-select)
   if (step === 1) {
     return (
-      <div className="space-y-6 animate-pop h-full flex flex-col">
-        {/* Budget Banner */}
-        {config.budget.enforcementMode === 'warning' && isOverQuota && (
-            <div className="bg-accent/10 border-theme border-accent text-accentDark p-3 rounded-theme text-xs font-bold text-center">
-                Warning: You have reached your monthly quota of {config.budget.monthlyQuota}.
+      <div className="space-y-3 animate-pop h-full flex flex-col">
+        {/* Progress Header */}
+        <div className="flex justify-between items-center text-[10px] font-black tracking-widest text-textMuted uppercase shrink-0">
+            <span>Step 1: Pick Teammates</span>
+            <span>{shoutoutCount}/{config.budget.monthlyQuota} Quota</span>
+        </div>
+
+        {/* Search Bar - Compact */}
+        <div className="relative shrink-0">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-textMuted/50 text-sm">
+                🔍
             </div>
-        )}
-        {!isOverQuota && (
-            <div className="text-center text-xs font-bold text-textMuted">
-                Monthly Budget: {shoutoutCount}/{config.budget.monthlyQuota} Used
+            <input 
+                type="text"
+                placeholder="Search teammates..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-4 py-2 rounded-theme border-theme border-borderMain bg-background font-bold text-textMain focus:border-secondary focus:border-b-[3px] outline-none transition-all placeholder:text-textMuted/40 text-sm"
+            />
+        </div>
+
+        {/* Selected List - Horizontal Strip */}
+        {selectedUsers.length > 0 && (
+            <div className="flex gap-1.5 overflow-x-auto no-scrollbar py-1 shrink-0">
+                {selectedUsers.map(u => (
+                    <div 
+                        key={u.id} 
+                        onClick={() => toggleUserSelection(u)}
+                        className="flex-shrink-0 bg-secondary/10 border border-secondary/30 rounded-full pl-1 pr-2 py-0.5 flex items-center gap-1.5 cursor-pointer hover:bg-danger/10 hover:border-danger transition-colors group"
+                    >
+                        <img src={u.avatar} className="w-4 h-4 rounded-full" alt="" />
+                        <span className="text-[9px] font-black text-secondaryDark group-hover:hidden truncate max-w-[50px]">{u.name.split(' ')[0]}</span>
+                        <span className="text-[9px] font-black text-danger hidden group-hover:block uppercase">×</span>
+                    </div>
+                ))}
             </div>
         )}
 
-        <OwlMascot message="Who deserves a shout-out? Pick one or more!" mood="neutral" />
-        <div className="flex-1 overflow-y-auto pr-2">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pb-4">
-            {users.filter(u => u.id !== currentUser.id).map(user => {
-                const isSelected = selectedUsers.some(u => u.id === user.id);
-                return (
-                    <div 
-                    key={user.id}
-                    onClick={() => toggleUserSelection(user)}
-                    className={`
-                        cursor-pointer p-4 rounded-theme border-theme transition-all
-                        flex flex-col items-center gap-2 relative border-b-[4px]
-                        ${isSelected
-                        ? 'border-secondary bg-secondary/10 translate-y-1 !border-b-2' 
-                        : 'border-borderMain hover:border-textMuted bg-background'
-                        }
-                    `}
-                    >
-                    {isSelected && (
-                        <div className="absolute top-2 right-2 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                            {currentTheme.icons.ui.check}
-                        </div>
-                    )}
-                    <img src={user.avatar} alt={user.name} className="w-16 h-16 rounded-full border-2 border-borderMain" />
-                    <span className="font-bold text-textMain text-center text-sm">{user.name}</span>
-                    </div>
-                );
-            })}
-            </div>
+        {/* Scrollable List Area - Ultra Dense 5 Column Grid with Large Avatars */}
+        <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar min-h-0">
+            {filteredUsers.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-10 opacity-40">
+                    <div className="text-4xl mb-2">{currentTheme.icons.mascot.sad}</div>
+                    <p className="text-[10px] font-black uppercase tracking-widest">No Matches</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-5 gap-x-1 gap-y-6 py-4">
+                    {filteredUsers.map(user => {
+                        const isSelected = selectedUsers.some(u => u.id === user.id);
+                        return (
+                            <div 
+                                key={user.id}
+                                onClick={() => toggleUserSelection(user)}
+                                className="flex flex-col items-center gap-1.5 cursor-pointer group active:scale-95 transition-transform"
+                            >
+                                <div className="relative">
+                                    <div className={`
+                                        w-14 h-14 rounded-full flex items-center justify-center border-theme transition-all duration-200
+                                        ${isSelected 
+                                            ? 'border-secondary scale-110 shadow-lg ring-4 ring-secondary/20' 
+                                            : 'border-borderMain group-hover:border-textMuted'}
+                                    `}>
+                                        <img 
+                                            src={user.avatar} 
+                                            alt={user.name} 
+                                            className="w-full h-full rounded-full object-cover" 
+                                        />
+                                    </div>
+                                    {isSelected && (
+                                        <div className="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-black border-2 border-white animate-pop">
+                                            {currentTheme.icons.ui.check}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="text-center w-full px-1">
+                                    <div className={`font-black text-[10px] truncate leading-tight uppercase tracking-tight ${isSelected ? 'text-secondaryDark' : 'text-textMain'}`}>
+                                        {user.name.split(' ')[0]}
+                                    </div>
+                                    <div className={`text-[7px] font-black uppercase opacity-60 ${getLeagueColor(user.league)}`}>
+                                        {user.league}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
-        <div className="flex justify-between pt-4 border-t-theme border-borderMain">
-            <DuoButton variant="ghost" onClick={onCancel}>Cancel</DuoButton>
-            <DuoButton 
-                disabled={selectedUsers.length === 0} 
-                onClick={() => setStep(2)}
-                className="w-40"
-            >
-                CONTINUE
-            </DuoButton>
+
+        {/* Footer Actions */}
+        <div className="pt-3 border-t-theme border-borderMain flex items-center justify-between bg-surface shrink-0">
+            <DuoButton variant="ghost" onClick={onCancel} className="!px-2 !py-1 !text-[10px]">Cancel</DuoButton>
+            <div className="flex items-center gap-3">
+                {selectedUsers.length > 0 && (
+                    <div className="text-[10px] font-black text-secondaryDark uppercase text-right leading-none">
+                        <div>{selectedUsers.length} Selected</div>
+                    </div>
+                )}
+                <DuoButton 
+                    disabled={selectedUsers.length === 0} 
+                    onClick={() => setStep(2)}
+                    className="w-24 !py-2 !text-xs"
+                >
+                    NEXT
+                </DuoButton>
+            </div>
         </div>
       </div>
     );
   }
 
-  // Step 2: Draft Message (AI Powered with CORN)
   if (step === 2) {
     return (
       <div className="space-y-4 animate-pop h-full flex flex-col">
         <div className="flex justify-between items-center mb-1">
            <DuoButton variant="ghost" onClick={() => setStep(1)} className="!p-0 text-sm">{currentTheme.icons.ui.back} Back</DuoButton>
-           <span className="font-bold text-textMuted uppercase tracking-widest text-xs">Step 2 of 3</span>
+           <span className="font-bold text-textMuted uppercase tracking-widest text-xs">Step 2: Coaching</span>
         </div>
 
         {!isAIActive ? (
-            <div className="bg-textMuted/10 p-4 rounded-theme border-theme border-textMuted flex items-center gap-3">
+            <div className="bg-textMuted/10 p-4 rounded-theme border-theme border-borderMain flex items-center gap-3">
                 <div className="text-2xl text-textMuted grayscale opacity-50">{currentTheme.icons.mascot.sad}</div>
                 <div>
                     <div className="font-black text-textMain text-sm">AI Coach Sleeping</div>
-                    <div className="text-xs text-textMuted">Ask admin to configure API keys in settings to enable feedback.</div>
+                    <div className="text-xs text-textMuted">Ask admin to configure API keys in settings.</div>
                 </div>
             </div>
         ) : (
@@ -178,7 +240,6 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
             />
         )}
 
-        {/* Health Bar (Only if AI Active) */}
         {isAIActive && (
             <div className="h-4 w-full bg-borderMain rounded-full overflow-hidden border-2 border-borderMain relative">
                 <div 
@@ -192,13 +253,12 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
         )}
 
         <textarea 
-            className="w-full h-40 p-4 rounded-theme border-theme border-borderMain focus:border-secondary focus:border-b-[6px] outline-none resize-none text-xl text-textMain font-medium bg-background placeholder:text-textMuted/50"
+            className="w-full flex-1 p-4 rounded-theme border-theme border-borderMain focus:border-secondary focus:border-b-[6px] outline-none resize-none text-xl text-textMain font-medium bg-background placeholder:text-textMuted/50"
             placeholder={`What did ${selectedUsers.map(u => u.name.split(' ')[0]).join(', ')} do?`}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
         />
 
-        {/* CORN Analysis Grid (Only if AI Active) */}
         {isAIActive && (
             <div className="grid grid-cols-2 gap-2 mt-2">
                 {[
@@ -228,8 +288,6 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
             </div>
         )}
 
-        <div className="flex-1"></div>
-
         <DuoButton 
             disabled={message.length < 5 || isAnalyzing} 
             onClick={() => setStep(3)}
@@ -242,7 +300,6 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
     );
   }
 
-  // Step 3: Value Match
   if (step === 3) {
       return (
           <div className="space-y-6 animate-pop h-full flex flex-col">
@@ -292,11 +349,9 @@ const RecognitionWizard: React.FC<RecognitionWizardProps> = ({ users, currentUse
       )
   }
 
-  // Step 4: Success
   if (step === 4) {
       return (
           <div className="flex flex-col items-center justify-center h-full text-center animate-pop relative overflow-hidden">
-               {/* Confetti simulation using theme icons */}
                {[...Array(20)].map((_, i) => (
                    <div 
                      key={i} 

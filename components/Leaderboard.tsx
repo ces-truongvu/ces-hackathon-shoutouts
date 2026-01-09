@@ -14,8 +14,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users, shoutouts }) => {
     const [viewingUser, setViewingUser] = useState<User | null>(null);
     const { currentTheme } = useTheme();
     
-    // Sort users by XP descending
-    const sortedUsers = [...users].sort((a, b) => b.xp - a.xp);
+    // Sort users by XP descending and limit to top 5
+    const sortedUsers = [...users].sort((a, b) => b.xp - a.xp).slice(0, 5);
 
     const getStatsForUser = (userId: string) => {
         const received = shoutouts.filter(s => s.recipientIds.includes(userId));
@@ -93,18 +93,25 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users, shoutouts }) => {
                             {viewingUserStats.recent.length === 0 ? (
                                 <p className="text-sm text-textMuted italic text-center py-4">No shout-outs received yet.</p>
                             ) : (
-                                viewingUserStats.recent.map(shout => (
-                                    <div key={shout.id} className="bg-background p-3 rounded-theme-sm border border-borderMain text-sm">
-                                        <p className="text-textMain font-medium">"{shout.message}"</p>
-                                        <div className="mt-2 flex gap-1">
-                                            {shout.coreValues.map(v => (
-                                                <span key={v} className="text-[10px] font-bold bg-surface border border-borderMain px-2 rounded-theme-sm text-textMuted">
-                                                    {v}
-                                                </span>
-                                            ))}
+                                viewingUserStats.recent.map(shout => {
+                                    const giver = users.find(u => u.id === shout.fromUserId);
+                                    return (
+                                        <div key={shout.id} className="bg-background p-3 rounded-theme-sm border border-borderMain text-sm">
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <img src={giver?.avatar} className="w-4 h-4 rounded-full" alt="" />
+                                                <span className="text-[10px] font-black text-textMuted uppercase">From: {giver?.name || 'Unknown'}</span>
+                                            </div>
+                                            <p className="text-textMain font-medium italic">"{shout.message}"</p>
+                                            <div className="mt-2 flex gap-1">
+                                                {shout.coreValues.map(v => (
+                                                    <span key={v} className="text-[10px] font-bold bg-surface border border-borderMain px-2 rounded-theme-sm text-textMuted">
+                                                        {v}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
 
@@ -124,9 +131,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users, shoutouts }) => {
             {/* List */}
             <div className="bg-surface rounded-theme border-theme border-borderMain overflow-hidden shadow-sm">
                 <div className="p-4 bg-background border-b-theme border-borderMain flex justify-between items-center">
-                    <h3 className="font-black text-textMuted uppercase tracking-widest text-sm">League Standings</h3>
+                    <h3 className="font-black text-textMuted uppercase tracking-widest text-sm">Top 5 Leaders</h3>
                     <span className="bg-accent/20 text-accentDark px-3 py-1 rounded-theme-sm text-xs font-bold border border-accent/30">
-                        {currentTheme.icons.gamification.trophy} Gold League
+                        {currentTheme.icons.gamification.trophy} Elite Tier
                     </span>
                 </div>
                 
